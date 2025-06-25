@@ -1,0 +1,89 @@
+# Encryption script
+import os
+from Crypto.Cipher import AES
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP
+from Crypto.Random import get_random_bytes
+from PIL import Image
+import base64
+
+# Helper function to pad the text for AES encryption
+def pad_text(text):
+    block_size = 16  # AES block size is 16 bytes
+    padding_len = block_size - len(text) % block_size
+    padding = chr(padding_len) * padding_len
+    return text + padding
+
+# Helper function to encode binary data into an image using LSB steganography
+def encode_data_into_image(data, image_path, output_image_path):
+    with Image.open(image_path) as img:
+        img = img.convert("RGBA")
+        pixels = img.load()
+
+        # Encode data length in the least significant bits of the first 32 pixels
+        data_length = len(data) * 8  # Number of bits
+        if data_length > (img.width * img.height - 32):
+            raise ValueError("Data too large to encode in the image.")
+
+        data_length_bits = f"{data_length:032b}"
+        for i in range(32):
+            r, g, b, a = pixels[i % img.width, i // img.width]
+            r = (r & ~1) | int(data_length_bits[i])
+            pixels[i % img.width, i // img.width] = (r, g, b, a)
+
+        # Encode the data in the least significant bits of subsequent pixels
+        data_bits = ''.join(f"{byte:08b}" for byte in data)
+        for i, bit in enumerate(data_bits):
+            pixel_index = 32 + i
+            r, g, b, a = pixels[pixel_index % img.width, pixel_index // img.width]
+            r = (r & ~1) | int(bit)
+            pixels[pixel_index % img.width, pixel_index // img.width] = (r, g, b, a)
+
+        # Save the modified image
+        img.save(output_image_path)
+
+# Encryption process
+def encrypt_text_to_image(message, rsa_public_key_path, image_path, output_image_path, encrypted_key_path):
+    # Step 1: Encrypt the message using AES-128
+    aes_key = get_random_bytes(16)  # 16 bytes = 128 bits
+    iv = get_random_bytes(16)  # Initialization vector
+    cipher_aes = AES.new(aes_key, AES.MODE_CBC, iv)
+    padded_message = pad_text(message)
+    encrypted_message = cipher_aes.encrypt(padded_message.encode('utf-8'))
+
+    # Step 2: Encrypt the AES key using RSA
+    with open(rsa_public_key_path, 'rb') as f:
+        rsa_key = RSA.import_key(f.read())
+    cipher_rsa = PKCS1_OAEP.new(rsa_key)
+    encrypted_aes_key = cipher_rsa.encrypt(aes_key)
+
+    # Step 3: Encode the encrypted message into an image
+    encode_data_into_image(iv + encrypted_message, image_path, output_image_path)
+
+    # Step 4: Save the encrypted AES key to a file
+    with open(encrypted_key_path, 'wb') as key_file:
+        key_file.write(encrypted_aes_key)
+
+    print(f"Encrypted message encoded into image: {output_image_path}")
+    print(f"Encrypted AES key saved to: {encrypted_key_path}")
+
+if __name__ == "__main__":
+    # Paths for RSA keys, input image, and output files
+    rsa_public_key_path = 'public_key.pem'
+    input_image_path = 'E:\Python\Steganography\Picture.webp'  # Provide an image to encode the data
+    output_image_path = 'output_image.png'
+    encrypted_key_path = 'encrypted_aes_key.txt'
+
+    # Generate RSA key pair for testing if not present
+    if not os.path.exists(rsa_public_key_path):
+        key = RSA.generate(2048)
+        with open('private_key.pem', 'wb') as f:
+            f.write(key.export_key())
+        with open(rsa_public_key_path, 'wb') as f:
+            f.write(key.publickey().export_key())
+
+    # Input message
+    message = input("Write the Message: ")
+
+    # Encryption
+    encrypt_text_to_image(message, rsa_public_key_path, input_image_path, output_image_path, encrypted_key_path)

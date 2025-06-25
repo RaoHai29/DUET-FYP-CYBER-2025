@@ -1,0 +1,77 @@
+# Decryption script
+import os
+from Crypto.Cipher import AES
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP
+from PIL import Image
+import base64
+
+# Helper function to unpad the text after AES decryption
+def unpad_text(text):
+    padding_len = ord(text[-1])
+    return text[:-padding_len]
+
+# Helper function to decode binary data from an image using LSB steganography
+def decode_data_from_image(image_path):
+    with Image.open(image_path) as img:
+        img = img.convert("RGBA")
+        pixels = img.load()
+
+        # Decode data length from the least significant bits of the first 32 pixels
+        data_length_bits = ''
+        for i in range(32):
+            r, g, b, a = pixels[i % img.width, i // img.width]
+            data_length_bits += str(r & 1)
+
+        data_length = int(data_length_bits, 2)
+        data_bits = ''
+
+        # Decode the data from the least significant bits of subsequent pixels
+        for i in range(data_length):
+            pixel_index = 32 + i
+            r, g, b, a = pixels[pixel_index % img.width, pixel_index // img.width]
+            data_bits += str(r & 1)
+
+        # Convert bits back to bytes
+        data_bytes = bytearray()
+        for i in range(0, len(data_bits), 8):
+            byte = data_bits[i:i + 8]
+            data_bytes.append(int(byte, 2))
+
+        return bytes(data_bytes)
+
+# Decryption process
+def decrypt_image_to_text(encrypted_image_path, rsa_private_key_path, encrypted_key_path):
+    # Step 1: Decode the encrypted message from the image
+    encrypted_data = decode_data_from_image(encrypted_image_path)
+
+    # Split IV and encrypted message
+    iv = encrypted_data[:16]  # First 16 bytes are the IV
+    encrypted_message = encrypted_data[16:]
+
+    # Step 2: Decrypt the AES key using RSA
+    with open(rsa_private_key_path, 'rb') as f:
+        rsa_key = RSA.import_key(f.read())
+    cipher_rsa = PKCS1_OAEP.new(rsa_key)
+
+    with open(encrypted_key_path, 'rb') as key_file:
+        encrypted_aes_key = key_file.read()
+
+    aes_key = cipher_rsa.decrypt(encrypted_aes_key)
+
+    # Step 3: Decrypt the message using AES-128
+    cipher_aes = AES.new(aes_key, AES.MODE_CBC, iv)
+    padded_message = cipher_aes.decrypt(encrypted_message).decode('utf-8')
+    message = unpad_text(padded_message)
+
+    print("Decrypted message:", message)
+    return message
+
+if __name__ == "__main__":
+    # Paths for RSA keys, input image, and encrypted key file
+    rsa_private_key_path = 'private_key.pem'
+    encrypted_image_path = 'output_image.png'
+    encrypted_key_path = 'encrypted_aes_key.txt'
+
+    # Decryption
+    decrypt_image_to_text(encrypted_image_path, rsa_private_key_path, encrypted_key_path)
