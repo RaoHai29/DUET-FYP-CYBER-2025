@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 import Message from "../models/message.model.js";
-
+import {encrypt,decrypt} from "../lib/encryption.js";
 import cloudinary from "../lib/cloudinary.js";
 import { getReceiverSocketId, io } from "../lib/socket.js";
 
@@ -27,8 +27,15 @@ export const getMessages = async (req, res) => {
         { senderId: userToChatId, receiverId: myId },
       ],
     });
-
-    res.status(200).json(messages);
+     const decryptedMessages = messages.map((msg) => {
+      return {
+        ...msg._doc, // Extract document from Mongoose object
+        text: msg.text ? decrypt(msg.text) : '',
+        image: msg.image ? decrypt(msg.image) : null,
+      };
+    });
+    console.log("Decrypted messages: ", decryptedMessages);
+    res.status(200).json(decryptedMessages);
   } catch (error) {
     console.log("Error in getMessages controller: ", error.message);
     res.status(500).json({ error: "Internal server error" });
@@ -42,27 +49,36 @@ export const sendMessage = async (req, res) => {
     const senderId = req.user._id;
 
     let imageUrl;
-    if (image) {
+     if (image) {
       // Upload base64 image to cloudinary
       const uploadResponse = await cloudinary.uploader.upload(image);
-      imageUrl = uploadResponse.secure_url;
+      const encryptedImageUrl = encrypt(uploadResponse.secure_url);
+      imageUrl = encryptedImageUrl;
     }
-
+     const encryptedText = encrypt(text);
     const newMessage = new Message({
       senderId,
       receiverId,
-      text,
+      text:encryptedText,
       image: imageUrl,
     });
 
     await newMessage.save();
 
+    const newdecryptedMessage = new Message({
+      ...newMessage._doc, // Extract document from Mongoose object
+       text:newMessage.text ? decrypt(newMessage.text) : '',
+        image: newMessage.image ? decrypt(newMessage.image) : null,
+    });
+    console.log("New decrypted message: ", newdecryptedMessage);
+    console.log("New message sent: ", newMessage);
+
     const receiverSocketId = getReceiverSocketId(receiverId);
     if (receiverSocketId) {
-      io.to(receiverSocketId).emit("newMessage", newMessage);
+      io.to(receiverSocketId).emit("newMessage", newdecryptedMessage);
     }
 
-    res.status(201).json(newMessage);
+    res.status(201).json(newdecryptedMessage);
   } catch (error) {
     console.log("Error in sendMessage controller: ", error.message);
     res.status(500).json({ error: "Internal server error" });
