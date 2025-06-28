@@ -1,8 +1,8 @@
 # 🛡️ AI-Powered Steganographic Communication System
 
-<center>
-<img src="https://github.com/RaoHai29/DUET-FYP-CYBER-2025/blob/main/POSTER.jpeg?raw=true" alt="Poster" width="450" height="650" />
-</center>
+<p align="center">
+  <img src="https://github.com/RaoHai29/DUET-FYP-CYBER-2025/blob/main/POSTER.jpeg?raw=true" alt="Poster" width="650"/>
+</p>
 
 
 ## 🔍 Overview
