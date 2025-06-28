@@ -1,6 +1,7 @@
 # 🛡️ AI-Powered Steganographic Communication System
 
-<img src="./POSTER.jpeg" alt="Poster" width="100%" />
+<img src="https://github.com/RaoHai29/DUET-FYP-CYBER-2025/blob/main/POSTER.jpeg?raw=true" alt="Poster" width="100%" />
+
 
 ## 🔍 Overview
 
@@ -77,10 +78,10 @@ We developed a **secure web communication system** that:
 
 | Name                      | Roll Number   | LinkedIn                                         |
 |---------------------------|---------------|--------------------------------------------------|
-| Hassan Ahmed Farooqi      | 21F-BSCY-34   | [🔗 Profile](https://www.linkedin.com/in/hassan-farooqi-b67561248/)     |
-| Muhammad Youshaa Ali      | 21F-BSCY-02   | [🔗 Profile](https://www.linkedin.com/in/youshaa/)                      |
-| Syed Ali Yousha Naqvi     | 21F-BSCY-48   | [🔗 Profile](https://www.linkedin.com/in/ali-yousha-162090254/)         |
 | **Rao Abdul Hai**         | 21F-BSCY-29   | [🔗 Profile](https://www.linkedin.com/in/rao-abdul-hai-87aa9b1b4/)      |
+| Muhammad Youshaa Ali      | 21F-BSCY-02   | [🔗 Profile](https://www.linkedin.com/in/youshaa/)                      |
+| Hassan Ahmed Farooqi      | 21F-BSCY-34   | [🔗 Profile](https://www.linkedin.com/in/hassan-farooqi-b67561248/)     |
+| Syed Ali Yousha Naqvi     | 21F-BSCY-48   | [🔗 Profile](https://www.linkedin.com/in/ali-yousha-162090254/)         |
 | Shahbaz Ali               | 21F-BSCY-41   | —                                                |
 
 **Supervisor:** Dr. Ahmed Sikandar  
