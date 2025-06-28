@@ -1,47 +1,48 @@
 # 🛡️ AI-Powered Steganographic Communication System
 
-![Poster](./POSTER.jpeg)
+<img src="./POSTER.jpeg" alt="Poster" width="100%" />
 
 ## 🔍 Overview
 
-In a world increasingly challenged by surveillance, censorship, and privacy breaches, our project **"AI-Powered Steganographic Communication System"** provides a future-ready, intelligent solution for **covert and secure multimedia communication**.
+In a world increasingly challenged by surveillance, censorship, and privacy breaches, our project **"AI-Powered Steganographic Communication System"** offers a future-ready, intelligent solution for **covert and secure multimedia communication**.
 
-This MERN-stack powered web platform leverages **hybrid cryptography**, **AI-based steganography**, and **deep learning-based compression** to protect your data in real-time.
+This MERN-stack powered platform combines **hybrid cryptography**, **AI-based steganography**, and **deep learning compression** to protect sensitive data in real-time.
 
 ---
 
 ## 🚀 What We Built
 
 We developed a **secure web communication system** that:
-- Encrypts messages and images using **AES-128 + RSA-1024**.
-- Hides encrypted data within **multimedia files** using AI-assisted steganography.
-- Compresses stego-media using neural autoencoders (Python-trained).
-- Sends and receives messages through a **modern, real-time MERN-based web application**.
-- Ensures end-to-end protection and detection resistance.
+
+- Encrypts messages and images using **AES-128 + RSA-1024**
+- Hides encrypted data inside **images using steganography**
+- Compresses stego-media using **autoencoders (trained in Python)**
+- Transmits data via a secure **MERN + WebSocket** infrastructure
+- Ensures end-to-end protection and detection resistance
 
 ---
 
 ## 🌟 Key Highlights
 
 ### 🔐 AI-Driven Encryption
-- AES-128 encryption ensures confidentiality.
-- RSA-1024 secures symmetric keys for transmission.
+- AES-128 encryption for message confidentiality
+- RSA-1024 for secure key distribution
 
 ### 🖼️ Steganographic Concealment
-- Adaptive LSB embedding for images.
-- U-Net-based embedding logic (Python-trained).
+- Adaptive LSB image embedding
+- U-Net and Wav2Vec assisted concealment
 
 ### 📦 Optimized Data Compression
-- Custom autoencoder trained in Python reduces stego size.
-- Retains visual fidelity and embedding integrity.
+- Autoencoder-based compression trained in Python
+- Reduced file size without losing embedded payload
 
 ### 🌐 Secure Web Transmission
-- MERN stack RESTful APIs for secure client-server exchange.
-- Real-time updates using Socket.IO.
+- Real-time APIs with Express.js & Socket.IO
+- Cloudinary integration for secure file handling
 
 ### ⏱️ Real-Time Data Protection
-- Messages are encrypted, embedded, and sent instantly.
-- Receiver auto-decrypts and displays data securely.
+- End-to-end secure message exchange
+- Live delivery and socket-based decryption on receipt
 
 ---
 
@@ -55,10 +56,8 @@ We developed a **secure web communication system** that:
 | 🗃️ Database       | MongoDB (Mongoose)                       |
 | 🔐 Cryptography   | Node.js Crypto module                    |
 | 🖼️ Steganography  | Jimp (Node.js), OpenCV (Python)          |
-| ☁️ Cloud Hosting  | Cloudinary (image storage)               |
+| ☁️ Cloud Hosting  | Cloudinary                               |
 | 🔊 Realtime       | Socket.IO                                |
-
-
 
 ---
 
@@ -70,32 +69,35 @@ We developed a **secure web communication system** that:
 | SSIM (structural similarity) | ~0.97               |
 | Steganalysis resistance      | 96% success         |
 | Embedding capacity           | ~512 KB             |
-| Compression gain             | ~42% reduced size   |
+| Compression gain             | ~42% size reduction |
 
 ---
 
-## 🧑‍💻 Team & Contributors
+## 👨‍💻 Team & Contributors
 
-| Name                      | Roll Number     |
-|---------------------------|-----------------|
-| Hassan Ahmed Farooqi      | 21F-BSCY-34     |
-| Muhammad Youshaa Ali      | 21F-BSCY-02     |
-| Syed Ali Yousha Naqvi     | 21F-BSCY-48     |
-| **Rao Abdul Hai**         | 21F-BSCY-29     |
-| Shahbaz Ali               | 21F-BSCY-41     |
+| Name                      | Roll Number   | LinkedIn                                         |
+|---------------------------|---------------|--------------------------------------------------|
+| Hassan Ahmed Farooqi      | 21F-BSCY-34   | [🔗 Profile](https://www.linkedin.com/in/hassan-farooqi-b67561248/)     |
+| Muhammad Youshaa Ali      | 21F-BSCY-02   | [🔗 Profile](https://www.linkedin.com/in/youshaa/)                      |
+| Syed Ali Yousha Naqvi     | 21F-BSCY-48   | [🔗 Profile](https://www.linkedin.com/in/ali-yousha-162090254/)         |
+| **Rao Abdul Hai**         | 21F-BSCY-29   | [🔗 Profile](https://www.linkedin.com/in/rao-abdul-hai-87aa9b1b4/)      |
+| Shahbaz Ali               | 21F-BSCY-41   | —                                                |
 
 **Supervisor:** Dr. Ahmed Sikandar  
 **Department:** Cybersecurity, Dawood University of Engineering and Technology (DUET)
 
+
 ---
 
-## 🧠 How It Works
+## 🛠️ How to Run Locally
 
-```mermaid
-graph TD;
-  A[User Inputs Text/Image] --> B[Encrypt with AES];
-  B --> C[Encrypt AES Key with RSA];
-  C --> D[Embed Encrypted Payload in Image using LSB/AI];
-  D --> E[Compress with Autoencoder];
-  E --> F[Send via MERN Backend];
-  F --> G[Receiver Extracts & Decrypts];
+```bash
+# Clone the repository
+git clone https://github.com/RaoHai29/DUET-FYP-CYBER-2025.git
+cd your-repo-name
+
+# Install dependencies
+npm install
+
+# Run the server
+npm run start
