@@ -10,6 +10,7 @@ import { connectDB } from "./lib/db.js";
 import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/message.route.js";
 import { app, server } from "./lib/socket.js";
+import { initialize } from "./lib/encryption.js";
 
 dotenv.config();
 
@@ -39,4 +40,5 @@ if ("production" === "production") {
 server.listen(PORT, () => {
   console.log("server is running on PORT:" + PORT);
   connectDB();
+  initialize()
 });

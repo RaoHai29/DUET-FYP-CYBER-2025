@@ -11,6 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "chat-app": "file:"
+    "@tensorflow/tfjs": "^4.22.0",
+    "chat-app": "file:",
+    "sharp": "^0.34.2"
   }
 }
